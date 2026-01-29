@@ -1,11 +1,12 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "vlm_dataset_captioner"
+name = "vlm-dataset-captioner"
 description = "Uses a VLM to caption images from a dataset."
 readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.8"
 authors = [{ name = "Alex Senden" }]
 maintainers = [{ name = "Alex Senden" }]
@@ -26,12 +27,12 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Image Processing",
 ]
 dependencies = [
-    "transformers==4.54.1",
-    "huggingface-hub==0.34.3",
-    "qwen_vl_utils==0.0.11",
-    "torch==2.7.1",
-    "torchvision==0.22.1",
-    "accelerate==1.9.0",
+    "transformers",
+    "huggingface-hub",
+    "qwen_vl_utils",
+    "torch",
+    "torchvision",
+    "accelerate",
 ]
 
 # Version is automatically provided by hatch-vcs
