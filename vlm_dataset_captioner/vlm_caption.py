@@ -103,7 +103,7 @@ def caption_image(prompt, image, model, processor, max_new_tokens=None):
     # Generate caption
     generated_ids = model.generate(
         **inputs,
-        max_new_tokens=128,
+        max_new_tokens=max_new_tokens or 128,
         do_sample=True,
         top_p=1.0,
         temperature=0.7,
@@ -159,13 +159,17 @@ def requires_caption(image_file, output_directory, overwrite):
 def caption_entire_directory(
     directory_path,
     output_directory,
-    model,
-    processor,
+    model_name="Qwen/Qwen2.5-VL-32B-Instruct",
+    model=None,
+    processor=None,
     max_new_tokens=None,
     ignore_substring=None,
     num_captions=None,
     overwrite=False,
 ):
+    if model is None or processor is None:
+        model, processor = init_model(model_name=model_name)
+
     print(
         f"INFO: Processing directory {directory_path} for image captions.", flush=True
     )
@@ -178,12 +182,12 @@ def caption_entire_directory(
                     caption_entire_directory(
                         subdir_path,
                         os.path.join(output_directory, subdir),
-                        model,
-                        processor,
-                        max_new_tokens,
-                        ignore_substring,
-                        num_captions,
-                        overwrite,
+                        model=model,
+                        processor=processor,
+                        max_new_tokens=max_new_tokens,
+                        ignore_substring=ignore_substring,
+                        num_captions=num_captions,
+                        overwrite=overwrite,
                     )
     else:
         prompt = get_prompt_for_directory(directory_path)
