@@ -49,7 +49,7 @@ def get_prompt_for_directory(directory_path):
             f"WARN: Prompt file not found for directory {prompt_file_path}. Using default prompt.",
             flush=True,
         )
-        prompt = "Describe the image in detail."
+        prompt = "In one short sentence. The caption will be used for image indexing and search, so include relevant details. 1 sentence only."
 
     print(f"INFO: Using prompt: '{prompt}'", flush=True)
 
