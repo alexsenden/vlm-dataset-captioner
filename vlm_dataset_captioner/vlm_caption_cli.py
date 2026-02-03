@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument(
         "--model",
         type=str,
-        default=None,
+        default="Qwen/Qwen2.5-VL-32B-Instruct",
         help="The HuggingFace model used to generate captions.",
     )
     parser.add_argument(
@@ -55,8 +55,10 @@ def parse_args():
 def main():
     args = parse_args()
     model, processor = init_model(args.model)
-    
-    output_dir = args.output_dir if args.output_dir is not None else f"{args.input_dir}_caption"
+
+    output_dir = (
+        args.output_dir if args.output_dir is not None else f"{args.input_dir}_caption"
+    )
 
     if args.model is not None:
         print(f"INFO: Using model {args.model} for captioning.", flush=True)
@@ -71,8 +73,8 @@ def main():
     caption_entire_directory(
         args.input_dir,
         output_dir,
-        model,
-        processor,
+        model=model,
+        processor=processor,
         max_new_tokens=args.max_length,
         ignore_substring=args.ignore_substring,
         num_captions=args.num_captions,

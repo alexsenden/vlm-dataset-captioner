@@ -86,6 +86,8 @@ def contains_chinese(text_string):
 def caption_image(prompt, image, model, processor, max_new_tokens=None):
     messages = get_messages(prompt, image)
 
+    print(f"INFO: Generating caption for image: {image}.", flush=True)
+
     # Prepare inputs for the model
     text = processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
@@ -128,6 +130,8 @@ def caption_image(prompt, image, model, processor, max_new_tokens=None):
         skip_special_tokens=True,
         clean_up_tokenization_spaces=False,
     )
+
+    print(f"INFO: Caption generated for image: {image}.", flush=True)
 
     return output_text[0]
 
@@ -206,15 +210,20 @@ def caption_entire_directory(
                             caption += "\n"
 
                         while True:
-                            caption += caption_image(
+                            individual_caption = caption_image(
                                 prompt,
                                 os.path.join(directory_path, image_file),
                                 model,
                                 processor,
                                 max_new_tokens,
                             )
-                            if not contains_chinese(caption):
+                            if not contains_chinese(individual_caption):
+                                caption += individual_caption
                                 break
+                            print(
+                                "WARN: Detected Chinese characters in caption. Regenerating...",
+                                flush=True,
+                            )
                     write_caption_to_file(image_file, caption, output_directory)
                 except Exception as e:
                     print(
